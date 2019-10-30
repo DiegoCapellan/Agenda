@@ -1,74 +1,159 @@
-public class Agenda {
-	//nuevo
-	import java.lang.annotation.Repeatable;
-	import java.util.Scanner;
+import java.util.*;
 
-	public static void guardarDatosContacto(int mContactos[][], int numContactos)  {
+public class Agenda {
+
+	private static int pintaMenu() {
+		// TODO Auto-generated method stub
+		Scanner leerOpc = new Scanner(System.in);
+		boolean correcto = false;
+		int opc=0;
+		do {
+			System.out.println("************* Men√∫ Agenda ************");
+			System.out.println("");
+			System.out.println("1. Guardar Contacto ");
+			System.out.println("2. Ver Contacto ");
+			System.out.println("3. Buscar Contacto");
+			System.out.println("4. Eliminar Contacto ");
+			System.out.println("5. Editar Contacto ");
+			System.out.println("6. Salir ");
+			System.out.println("");
+			System.out.println("**************************************");
+			System.out.println("Elija una Opci√≥n de las Proporcionadas");
+			opc = leerOpc.nextInt();
+			
+			if(opc<1||opc>6) {
+				System.out.println("Opci√≥n no Permitida, Vuelva a Intentarlo)");
+			}else {
+				correcto = true;
+			}
 		
+		} while (!correcto);
+		
+		return opc;
+	}
+	
+	
+	public static int buscarEspacioBlanco(String mDatos[][]) {
+		int espacioBlanco = -1;
+		
+		for (int i=0; i < mDatos.length; i++) {
+			if (mDatos[i][0] == null) {
+				espacioBlanco = i;
+				break;	
+			}
+		}
+		return espacioBlanco;
+	}
+	
+	public static void guardarContacto(String mDatos[][]) {
 		Scanner leer = new Scanner(System.in);
 		
-		
-		String nombre = "";
-		String telefono = "";
-		
-		for (int i = 0; i < numContactos.length; i++) {
+		int espacioBlanco = buscarEspacioBlanco(mDatos);
+		if (espacioBlanco == -1) {
+			System.out.println("No Hay Espacio Disponible");
+		}else {
+			System.out.println("Dime el Nombre");
+			mDatos[espacioBlanco][0] = leer.nextLine();
 			
-			System.out.println("Dime el Nombre del Contacto");
-			nombre = leer.nextLine();
-			nombre = mContactos[numContactos][1];
-			
-			System.out.println("Dime el N˙mero de Telefono del Contacto");
-			telefono = leer.nextLine();
-			∫
-			
-			
+			System.out.println("Dime el N√∫mero de Tel√©fono");
+			mDatos[espacioBlanco][1] = leer.nextLine();
 		}
 	}
 	
 	
+	private static void verContacto(String mDatos[][]) {
+		// TODO Auto-generated method stub
+		for (int i=0; i < mDatos.length; i++) {
+			if (mDatos[i][0]!=null) {
+				System.out.println((i+1)+": "+mDatos[i][0]+" - "+mDatos[i][1]);
+			}
+		}
+	}
+	
+	
+	public static int buscarContacto(String mDatos[][]) {
+		Scanner leerNombre = new Scanner(System.in);
+		
+		boolean buscado = false;
+		String nombre = "";
+		
+		System.out.println("Dime el Nombre del Contacto Buscar");
+		nombre = leerNombre.nextLine();
+		
+		for (int i = 0; i < mDatos.length; i++) {
+			
+			if ((mDatos[i][0] != null) && mDatos[i][0].equalsIgnoreCase(nombre)) {
+				System.out.println("Ese Contaco tiene de Nombre " + mDatos[i][0] + " y su Telefono es " + mDatos[i][1]);
+				buscado = true;
+				return i;
+			}
+		}
+		if (buscado=false) {
+			System.out.println("Contacto no encontrado");
+		}
+		return -1;
+	}
+	
+	
+	public static void eliminarContacto(String mDatos[][]) {
+		Scanner leerNombre = new Scanner(System.in);
+		String nombre = "";
+		
+		System.out.println("Dime el Nombre del Contacto a Eliminar");
+		nombre = leerNombre.nextLine();
+		
+		for (int i = 0; i < mDatos.length; i++) {
+			if ((mDatos[i][0] != null) && mDatos[i][0].equalsIgnoreCase(nombre)) {
+		}
+			mDatos[i][0] = null;
+			mDatos[i][1] = null;
+				
+			System.out.println("Ha sido Eliminado el Contacto Elegido");
+	}
+		}
+	
+	
+	public static void editarContacto(String mDatos[][]) {
+		Scanner leerEdicion = new Scanner(System.in);
+		
+		int posicion = buscarContacto(mDatos);
+		
+		System.out.println("El Nombre ha sido Editado");
+		mDatos[posicion][0] = leerEdicion.nextLine();
+		
+		System.out.println("El Numero ha sido Editado");
+		mDatos[posicion][1] = leerEdicion.nextLine();
+	}
+	
+	
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String mDatos[][] = new String [50][2];
 		
-		Scanner leer = new Scanner(System.in);
+		int opc = 0;
 		
-		int fila, opc, numContactos;
-		int mContactos[][];
-		opc = 0;
-		
-		System.out.println("Dime el N˙mero de Contactos a Introducir");
-		numContactos = leer.nextInt();
-		
-		mContactos = new int[numContactos][];
-		
-		while (opc != 5) {
-			
-			System.out.println("************* Men˙ Agenda ************");
-			System.out.println("");
-			System.out.println("1. Guardar Contactos ");
-			System.out.println("2. Ver Contacto ");
-			System.out.println("3. Eliminar Contacto ");
-			System.out.println("4. Editar Contacto ");
-			System.out.println("5. Salir ");
-			System.out.println("");
-			System.out.println("**************************************");
-			System.out.println("Elija una OpciÛn de las Proporcionadas");
-			opc = leer.nextInt();
-			
+		do {
+			opc=pintaMenu();
 			switch (opc) {
 			case 1:
-				guardarDatosContacto(mContactos, numContactos);
+				guardarContacto(mDatos);
 				break;
 			case 2:
-				mostrarDatosContacto(mContactos, numContactos);
+				verContacto(mDatos);
 				break;
 			case 3:
-				borrarDatosContacto(mContactos, numContactos);
+				buscarContacto(mDatos);
 				break;
 			case 4:
-				editarDatosContacto(mContactos, numContactos);
+				eliminarContacto(mDatos);
 				break;
-			default:
+			case 5:
+				editarContacto(mDatos);
+				break;
+			case 6:
 				System.out.println("Agenda Cerrada");
-			}	
-		}
+				break;
+			}
+		} while (opc != 6);
 	}
 }
